@@ -1,0 +1,44 @@
+{% extends "base.html" %} 
+{% block content %}
+
+{% comment %} <div class="mt-5 text-center">
+<a class="btn btn-warning mx-3" href="{% url 'edit_profile' %}">
+    Edit Your Profile
+</a>
+</div> {% endcomment %}
+<div class='text-center mt-3'>
+    <div class='border rounded bg-sky-600'>
+    <h1 class='mb-3'>{{ user.username | capfirst}}'s Profile</h1>
+    <h4 class='mb-3'><strong>First Name:</strong> {{ user.first_name }}</h4>
+    <h4 class='mb-3'><strong>Last Name:</strong> {{ user.last_name }}</h4>
+    <h4><strong>Email:</strong> {{ user.email }}</h4>
+    </div>
+</div>
+
+    <table class=" w-full text-white">
+        <thead>
+          <tr class='bg-indigo-600'>
+            <th class='text-center border border-slate-600 p-4' scope="col">Name</th>
+            <th class='text-center border border-slate-600 p-4' scope="col">Category</th>
+            <th class='text-center border border-slate-600 p-4' scope="col">Borrow Price</th>
+            <th class='text-center border border-slate-600 p-4' scope="col">Borrow Date</th>
+            <th class='text-center border border-slate-600 p-4' scope="col">Return Date</th>
+          </tr>
+        </thead>
+        <tbody class='text-center bg-black'>
+            {% if  borrow_history%}
+            <h2 class='text-center text-2xl font-bold text-indigo-600 my-10'>Borrow History</h2>
+            {% for borr in  borrow_history%}
+            <tr class=''>
+                <td class='border border-slate-600 p-4'>{{borr.book.title}}</td>
+                <td class='border border-slate-600 p-4'>{% for cat in  borr.book.category.all %} {{ cat.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                <td class='border border-slate-600 p-4'>${{borr.book.price}}</td>
+                <td class='border border-slate-600 p-4'>{{borr.borrow_date}}</td>
+                <td class='border border-slate-600 p-4'> {% if borr.return_date != None %}{{borr.return_date}}{% endif %} </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+      </table>
+
+{% endblock %}

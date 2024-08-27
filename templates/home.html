@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="p-4 mt-5">
+    <h3 class='font-medium text-xl text-center mb-5'>All Brands</h3>
+      <div class="rounded-3 p-3 text-center">
+        {% for br in  category%}
+          <button class='p-2 bg-blue-700 mr-2 rounded'> <a class='text-decoration-none text-white' href="{% url 'category_wise_post' br.slug %}">{{br.name}}</a> </button>
+        {% endfor %}
+      </div>
+    </div>
+      <div class="p-4">
+        <h4 class='text-center mb-3 text-lg'>{{data | length}} results found</h4>
+        <div>
+          <div class="flex justify-center flex-wrap gap-10 ">
+            {% for book in data %}
+            <div class="rounded border-2 border-sky-500" style="width: 20rem;">
+              <img src="{{book.image.url}}" class="object-cover h-48 w-96" alt="...">
+              <div class=" p-2 bg-white">
+                <h5 class="mb-2 text-lg font-medium">{{book.title}}</h5>
+                <p class=" mb-2">{{book.description | slice:'1:90'}}...</p>
+                <h5 class='mb-3 text-lg font-medium'>Price : <small class='text-danger text-base text-red-700'> ${{book.price}}</small> </h5>
+                <p class='mb-4'>Category : <span class='text-green-500 font-medium'>{% for category in book.category.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</span></p>
+                <button class="p-2 rounded bg-green-700"><a class='text-decoration-none text-white' href="{% url 'book_details' book.id%}">View Details</a></button>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+{% endblock  %}
